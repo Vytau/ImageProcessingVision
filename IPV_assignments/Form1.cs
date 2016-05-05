@@ -91,7 +91,7 @@ namespace IPV_assignments
         private void button3_Click(object sender, EventArgs e)
         {
             //ToDo
-            //implement C part on this buttondasdas
+            //implement C part on this button
         }
 
         private void button4_Click(object sender, EventArgs e)
