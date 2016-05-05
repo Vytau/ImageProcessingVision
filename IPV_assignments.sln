@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPV_assignment1", "IPV_assignments\IPV_assignment1.csproj", "{41D39DC7-4034-4A9A-9FBE-DCE78CDAA0EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPV_assignment1", "IPV_assignment1\IPV_assignment1.csproj", "{41D39DC7-4034-4A9A-9FBE-DCE78CDAA0EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPV_assignment2", "IPV_assignment2\IPV_assignment2.csproj", "{58674D7B-B04C-4440-AC9C-F6984F882CA4}"
 EndProject
