@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IPV_assignmen1.Properties
+namespace IPV_assignment2.Properties
 {
 
 

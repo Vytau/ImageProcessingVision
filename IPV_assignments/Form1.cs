@@ -13,7 +13,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.Util;
 
-namespace IPV_assignments
+namespace IPV_assignmen1
 {
     public partial class Form1 : Form
     {
