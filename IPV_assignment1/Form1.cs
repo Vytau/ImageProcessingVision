@@ -110,6 +110,48 @@ namespace IPV_assignmen1
             //imageBox4.Image = grayImage.ThresholdBinary(new Gray(125), new Gray(200));
         }
 
+        private void ProcessFrameD(object sender, EventArgs arg)
+        {
+            Image<Bgr, byte> tempCloneImage = _imageFrame.Clone();
+            Image<Gray, byte> origine = tempCloneImage.Convert<Gray, byte>();
+            Image<Gray, byte> newImage = tempCloneImage.Convert<Gray, byte>();
+            List<byte> tempValues = new List<byte>();
+
+            for (int x = 0; x < tempCloneImage.Rows; x++)
+            {
+                for (int y = 0; y < tempCloneImage.Cols; y++)
+                {
+                    tempValues.Clear();
+                    tempValues.Add(origine.Data[x, y, 0]);
+                    if (x - 1 >= 0)
+                    {
+                        tempValues.Add(origine.Data[x - 1, y, 0]);
+                    }
+                    if (y - 1 >= 0)
+                    {
+                        tempValues.Add(origine.Data[x, y - 1, 0]);
+                    }
+                    if (x + 1 > tempCloneImage.Rows)
+                    {
+                        tempValues.Add(origine.Data[x + 1, y, 0]);
+                    }
+                    if (y + 1 > tempCloneImage.Cols)
+                    {
+                        tempValues.Add(origine.Data[x, y + 1, 0]);
+                    }
+
+                    newImage.Data[x, y, 0] = tempValues.Max();
+                }
+            }
+
+            imageBox5.Image = newImage;
+            //to compare with oroginal picture
+            imageBox6.Image = origine;
+
+            //or with emgu function
+            //imageBox6.Image = origine.Dilate(1);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Idle += ProcessFrameA;
@@ -127,8 +169,7 @@ namespace IPV_assignmen1
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //ToDo
-            //implement D part on this button
+            Application.Idle += ProcessFrameD;
         }
 
         private void cameraBtn_Click(object sender, EventArgs e)
