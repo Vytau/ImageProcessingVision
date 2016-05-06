@@ -19,7 +19,7 @@ namespace IPV_assignmen1
     {
         private Capture _capture;        //takes images from camera as image frames
         private bool _captureInProgress; // checks if capture is executing
-        private Image<Bgr, byte> _imageFrame = new Image<Bgr, byte>(@"lena.jpg");
+        private Image<Bgr, byte> _imageFrame = new Image<Bgr, byte>(@"..\..\Resources\lena.jpg");
 
         public Form1()
         {
@@ -68,8 +68,8 @@ namespace IPV_assignmen1
                 for (int y = 0; y < tempCloneImage.Cols; y++)
                 {
                     Bgr color = tempCloneImage[x, y];
-                    color.Green = color.Green * 0.114;
-                    color.Blue = color.Blue * 0.587;
+                    color.Blue = color.Blue * 0.114;
+                    color.Green = color.Green * 0.587;
                     color.Red = color.Red * 0.299;
                     tempCloneImage[x, y] = color;
                 }

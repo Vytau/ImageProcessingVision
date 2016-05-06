@@ -189,18 +189,18 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(443, 684);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(40, 13);
+            this.label5.Size = new System.Drawing.Size(15, 13);
             this.label5.TabIndex = 7;
-            this.label5.Text = "original";
+            this.label5.Text = "D";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(754, 684);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(40, 13);
+            this.label6.Size = new System.Drawing.Size(30, 13);
             this.label6.TabIndex = 7;
-            this.label6.Text = "original";
+            this.label6.Text = "extra";
             // 
             // button5
             // 
