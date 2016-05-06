@@ -79,8 +79,8 @@ namespace IPV_assignmen1
 
             //or with method from emgu cv
 
-            Image<Gray, byte> grayImage = tempCloneImage.Convert<Gray, byte>();
-            imageBox6.Image = grayImage;
+            //Image<Gray, byte> grayImage = tempCloneImage.Convert<Gray, byte>();
+            //imageBox6.Image = grayImage;
         }
 
         private void ProcessFrameC(object sender, EventArgs arg)
@@ -104,12 +104,13 @@ namespace IPV_assignmen1
             }
 
             imageBox4.Image = grayImage;
-            //or with emgu cv treshhold function
+
+            //or with emgu cv threshold function
+
             //imageBox4.Image = grayImage.ThresholdBinary(new Gray(125), new Gray(200));
         }
 
-        private
-            void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             Application.Idle += ProcessFrameA;
         }
