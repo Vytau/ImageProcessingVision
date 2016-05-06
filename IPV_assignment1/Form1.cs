@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.UI;
 using Emgu.Util;
 
 namespace IPV_assignmen1
@@ -75,9 +76,40 @@ namespace IPV_assignmen1
                 }
             }
             imageBox3.Image = tempCloneImage;
+
+            //or with method from emgu cv
+
+            Image<Gray, byte> grayImage = tempCloneImage.Convert<Gray, byte>();
+            imageBox6.Image = grayImage;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ProcessFrameC(object sender, EventArgs arg)
+        {
+            Image<Bgr, byte> tempCloneImage = _imageFrame.Clone();
+            Image<Gray, byte> grayImage = tempCloneImage.Convert<Gray, byte>();
+
+            for (int x = 0; x < grayImage.Rows; x++)
+            {
+                for (int y = 0; y < grayImage.Cols; y++)
+                {
+                    if (grayImage[x, y].Intensity > 125)
+                    {
+                        grayImage.Data[x, y, 0] = 255;
+                    }
+                    else if (grayImage[x, y].Intensity <= 125)
+                    {
+                        grayImage.Data[x, y, 0] = 0;
+                    }
+                }
+            }
+
+            imageBox4.Image = grayImage;
+            //or with emgu cv treshhold function
+            //imageBox4.Image = grayImage.ThresholdBinary(new Gray(125), new Gray(200));
+        }
+
+        private
+            void button1_Click(object sender, EventArgs e)
         {
             Application.Idle += ProcessFrameA;
         }
@@ -85,13 +117,11 @@ namespace IPV_assignmen1
         private void button2_Click(object sender, EventArgs e)
         {
             Application.Idle += ProcessFrameB;
-
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //ToDo
-            //implement C part on this button
+            Application.Idle += ProcessFrameC;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -121,7 +151,7 @@ namespace IPV_assignmen1
                 if (_captureInProgress)
                 {  //if camera is getting frames then stop the capture and set button Text
                     // "Start" for resuming capture
-                    button5.Text = "Start!"; //
+                    button5.Text = "Start!";
                     Application.Idle -= ProcessFrame;
                 }
                 else
@@ -134,6 +164,16 @@ namespace IPV_assignmen1
 
                 _captureInProgress = !_captureInProgress;
             }
+        }
+
+        private void thresholdHistBtn_Click(object sender, EventArgs e)
+        {
+            Image<Bgr, byte> tempCloneImage = _imageFrame.Clone();
+            Image<Gray, byte> grayImage = tempCloneImage.Convert<Gray, byte>();
+
+            histogramBox1.ClearHistogram();
+            histogramBox1.GenerateHistograms(grayImage, 256);
+            histogramBox1.Refresh();
         }
     }
 }

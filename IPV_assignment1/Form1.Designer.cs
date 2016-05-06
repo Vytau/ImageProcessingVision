@@ -46,6 +46,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.histogramBox1 = new Emgu.CV.UI.HistogramBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox3)).BeginInit();
@@ -212,11 +215,40 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.cameraBtn_Click);
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(948, 289);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(93, 23);
+            this.button6.TabIndex = 9;
+            this.button6.Text = "threshold hist";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.thresholdHistBtn_Click);
+            // 
+            // histogramBox1
+            // 
+            this.histogramBox1.Location = new System.Drawing.Point(930, 381);
+            this.histogramBox1.Name = "histogramBox1";
+            this.histogramBox1.Size = new System.Drawing.Size(300, 300);
+            this.histogramBox1.TabIndex = 10;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(1023, 684);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(98, 13);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "threshold histogram";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1035, 717);
+            this.ClientSize = new System.Drawing.Size(1241, 717);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.histogramBox1);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -266,6 +298,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private Emgu.CV.UI.HistogramBox histogramBox1;
+        private System.Windows.Forms.Label label7;
     }
 }
 
