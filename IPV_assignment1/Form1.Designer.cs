@@ -1,4 +1,4 @@
-﻿namespace IPV_assignmen1
+﻿namespace IPV_assignment1
 {
     partial class Form1
     {

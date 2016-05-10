@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace IPV_assignmen1
+namespace IPV_assignment1
 {
     static class Program
     {
