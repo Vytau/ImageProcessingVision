@@ -49,6 +49,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.histogramBox1 = new Emgu.CV.UI.HistogramBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox3)).BeginInit();
@@ -241,11 +242,22 @@
             this.label7.TabIndex = 11;
             this.label7.Text = "threshold histogram";
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(948, 129);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 12;
+            this.button7.Text = "Extra";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1241, 717);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.histogramBox1);
             this.Controls.Add(this.button6);
@@ -301,6 +313,7 @@
         private System.Windows.Forms.Button button6;
         private Emgu.CV.UI.HistogramBox histogramBox1;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button button7;
     }
 }
 

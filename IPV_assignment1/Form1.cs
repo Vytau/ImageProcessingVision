@@ -142,6 +142,11 @@ namespace IPV_assignment1
             //imageBox6.Image = origine.Dilate(1);
         }
 
+        private void ProcessFrameE(object sender, EventArgs arg)
+        {
+            
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Idle += ProcessFrameA;
@@ -206,6 +211,11 @@ namespace IPV_assignment1
             histogramBox1.ClearHistogram();
             histogramBox1.GenerateHistograms(grayImage, 256);
             histogramBox1.Refresh();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Application.Idle += ProcessFrameE;
         }
     }
 }
