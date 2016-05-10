@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Emgu.CV;
@@ -60,10 +61,8 @@ namespace IPV_assignment1
                 for (int y = 0; y < tempCloneImage.Cols; y++)
                 {
                     Bgr color = tempCloneImage[x, y];
-                    color.Blue = color.Blue * 0.114;
-                    color.Green = color.Green * 0.587;
-                    color.Red = color.Red * 0.299;
-                    tempCloneImage[x, y] = color;
+                    var level = (byte) (color.Blue*0.114 + color.Green*0.587 + color.Red*0.299);
+                    tempCloneImage[x, y] = new Bgr(level,level,level);
                 }
             }
             imageBox3.Image = tempCloneImage;
