@@ -199,6 +199,54 @@ namespace IPV_assignment1
             imageBox6.Image = newImage;
         }
 
+        private void ProcessFrameF(object sender, EventArgs arg)
+        {
+            Image<Bgr, byte> tempCloneImage = _imageFrame.Clone();
+            Image<Gray, byte> origine = tempCloneImage.Convert<Gray, byte>();
+            Image<Gray, byte> newImage = tempCloneImage.Convert<Gray, byte>();
+            List<double> tempValues1 = new List<double>(); //vertical
+            List<double> tempValues2 = new List<double>(); //horizontal
+
+            for (int x = 0; x < tempCloneImage.Rows; x++)
+            {
+                for (int y = 0; y < tempCloneImage.Cols; y++)
+                {
+                    tempValues1.Clear();
+
+                    if (x != 0 & y != 0 & x + 1 != origine.Cols & y + 1 != origine.Rows)
+                    {
+                        //col -1
+                        tempValues1.Add(origine.Data[x - 1, y - 1, 0]);
+                        //
+                        tempValues1.Add(origine.Data[x - 1, y, 0]);
+                        //
+                        tempValues1.Add(origine.Data[x - 1, y + 1, 0]);
+
+                        //col 0
+                        tempValues1.Add(origine.Data[x, y - 1, 0]);
+                        //
+                        tempValues1.Add(origine.Data[x, y, 0]);
+                        //
+                        tempValues1.Add(origine.Data[x, y + 1, 0]);
+
+                        //col 1
+                        tempValues1.Add(origine.Data[x + 1, y - 1, 0]);
+                        //
+                        tempValues1.Add(origine.Data[x + 1, y, 0]);
+                        //
+                        tempValues1.Add(origine.Data[x + 1, y + 1, 0]);
+
+                        byte l = (byte)tempValues1.Average(i => i);
+
+                        newImage.Data[x, y, 0] = l;
+                    }
+                }
+            }
+            imageBox7.Image = newImage;
+        }
+
+
+       
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Idle += ProcessFrameA;
@@ -271,6 +319,11 @@ namespace IPV_assignment1
         private void button7_Click(object sender, EventArgs e)
         {
             Application.Idle += ProcessFrameE;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Application.Idle += ProcessFrameF;
         }
     }
 }

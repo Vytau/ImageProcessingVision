@@ -50,12 +50,15 @@
             this.histogramBox1 = new Emgu.CV.UI.HistogramBox();
             this.label7 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.imageBox7 = new Emgu.CV.UI.ImageBox();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageBox7)).BeginInit();
             this.SuspendLayout();
             // 
             // imageBox1
@@ -208,7 +211,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(949, 185);
+            this.button5.Location = new System.Drawing.Point(949, 210);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 8;
@@ -252,11 +255,32 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(949, 158);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 23);
+            this.button8.TabIndex = 13;
+            this.button8.Text = "Extra2";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // imageBox7
+            // 
+            this.imageBox7.Location = new System.Drawing.Point(1042, 365);
+            this.imageBox7.Name = "imageBox7";
+            this.imageBox7.Size = new System.Drawing.Size(300, 300);
+            this.imageBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imageBox7.TabIndex = 14;
+            this.imageBox7.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1241, 717);
+            this.ClientSize = new System.Drawing.Size(1354, 733);
+            this.Controls.Add(this.imageBox7);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.histogramBox1);
@@ -286,6 +310,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imageBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageBox7)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -314,6 +339,8 @@
         private Emgu.CV.UI.HistogramBox histogramBox1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private Emgu.CV.UI.ImageBox imageBox7;
     }
 }
 
