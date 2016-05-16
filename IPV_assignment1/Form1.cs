@@ -10,7 +10,7 @@ namespace IPV_assignment1
 {
     public partial class Form1 : Form
     {
-        private Capture _capture;        //takes images from camera as image frames
+        private Capture _capture; //takes images from camera as image frames
         private bool _captureInProgress; // checks if capture is executing
         private Image<Bgr, byte> _imageFrame = new Image<Bgr, byte>(@"..\..\Resources\lena.jpg");
 
@@ -23,9 +23,9 @@ namespace IPV_assignment1
 
         private void ProcessFrame(object sender, EventArgs arg)
         {
-            _imageFrame = _capture.QueryFrame().ToImage<Bgr, byte>();   //line 1
+            _imageFrame = _capture.QueryFrame().ToImage<Bgr, byte>(); //line 1
 
-            imageBox1.Image = _imageFrame;                              //line 2
+            imageBox1.Image = _imageFrame; //line 2
         }
 
         private void ProcessFrameA(object sender, EventArgs arg)
@@ -62,7 +62,7 @@ namespace IPV_assignment1
                 {
                     Bgr color = tempCloneImage[x, y];
                     var level = (byte) (color.Blue*0.114 + color.Green*0.587 + color.Red*0.299);
-                    tempCloneImage[x, y] = new Bgr(level,level,level);
+                    tempCloneImage[x, y] = new Bgr(level, level, level);
                 }
             }
             imageBox3.Image = tempCloneImage;
@@ -136,7 +136,7 @@ namespace IPV_assignment1
 
             imageBox5.Image = newImage;
             //to compare with oroginal picture
-            imageBox6.Image = origine;
+            //imageBox6.Image = origine;
 
             //or with emgu function
             //imageBox6.Image = origine.Dilate(1);
@@ -144,7 +144,59 @@ namespace IPV_assignment1
 
         private void ProcessFrameE(object sender, EventArgs arg)
         {
-            
+            Image<Bgr, byte> tempCloneImage = _imageFrame.Clone();
+            Image<Gray, byte> origine = tempCloneImage.Convert<Gray, byte>();
+            Image<Gray, byte> newImage = tempCloneImage.Convert<Gray, byte>();
+            List<double> tempValues1 = new List<double>(); //vertical
+            List<double> tempValues2 = new List<double>(); //horizontal
+
+            for (int x = 0; x < tempCloneImage.Rows; x++)
+            {
+                for (int y = 0; y < tempCloneImage.Cols; y++)
+                {
+                    tempValues1.Clear();
+                    tempValues2.Clear();
+
+                    if (x != 0 & y != 0 & x+1 != origine.Cols & y+1 != origine.Rows)
+                    {
+                        //col -1
+                        tempValues1.Add(origine.Data[x - 1, y - 1, 0]*-1);
+                        tempValues2.Add(origine.Data[x - 1, y - 1, 0]*1);
+                        //
+                        tempValues1.Add(origine.Data[x - 1, y, 0]*-2);
+                        tempValues2.Add(origine.Data[x - 1, y, 0]*0);
+                        //
+                        tempValues1.Add(origine.Data[x - 1, y + 1, 0]*-1);
+                        tempValues2.Add(origine.Data[x - 1, y + 1, 0]*-1);
+
+                        //col 0
+                        tempValues1.Add(origine.Data[x, y - 1, 0]*0);
+                        tempValues2.Add(origine.Data[x, y - 1, 0]*2);
+                        //
+                        tempValues1.Add(origine.Data[x, y, 0]*0);
+                        tempValues2.Add(origine.Data[x, y, 0]*0);
+                        //
+                        tempValues1.Add(origine.Data[x, y + 1, 0]*0);
+                        tempValues2.Add(origine.Data[x, y + 1, 0]*-2);
+
+                        //col 1
+                        tempValues1.Add(origine.Data[x + 1, y - 1, 0]*1);
+                        tempValues2.Add(origine.Data[x + 1, y - 1, 0]*1);
+                        //
+                        tempValues1.Add(origine.Data[x + 1, y, 0]*2);
+                        tempValues2.Add(origine.Data[x + 1, y, 0]*0);
+                        //
+                        tempValues1.Add(origine.Data[x + 1, y + 1, 0]*1);
+                        tempValues2.Add(origine.Data[x + 1, y + 1, 0]*-1);
+
+                        double temp = Math.Sqrt(Math.Pow(tempValues1.Sum(), 2)
+                                                + Math.Pow(tempValues2.Sum(), 2));
+
+                        newImage.Data[x, y, 0] = (byte) temp;
+                    }
+                }
+            }
+            imageBox6.Image = newImage;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -170,6 +222,7 @@ namespace IPV_assignment1
         private void cameraBtn_Click(object sender, EventArgs e)
         {
             #region if capture is not created, create it now
+
             if (_capture == null)
             {
                 try
@@ -181,12 +234,14 @@ namespace IPV_assignment1
                     MessageBox.Show(excpt.Message);
                 }
             }
+
             #endregion
 
             if (_capture != null)
             {
                 if (_captureInProgress)
-                {  //if camera is getting frames then stop the capture and set button Text
+                {
+                    //if camera is getting frames then stop the capture and set button Text
                     // "Start" for resuming capture
                     button5.Text = "Start!";
                     Application.Idle -= ProcessFrame;
