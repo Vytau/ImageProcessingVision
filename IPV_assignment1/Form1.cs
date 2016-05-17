@@ -13,6 +13,7 @@ namespace IPV_assignment1
         private Capture _capture; //takes images from camera as image frames
         private bool _captureInProgress; // checks if capture is executing
         private Image<Bgr, byte> _imageFrame = new Image<Bgr, byte>(@"..\..\Resources\lena.jpg");
+        private Image<Gray, byte> grayImage;
 
         public Form1()
         {
@@ -76,7 +77,7 @@ namespace IPV_assignment1
         private void ProcessFrameC(object sender, EventArgs arg)
         {
             Image<Bgr, byte> tempCloneImage = _imageFrame.Clone();
-            Image<Gray, byte> grayImage = tempCloneImage.Convert<Gray, byte>();
+            grayImage = tempCloneImage.Convert<Gray, byte>();
 
             for (int x = 0; x < grayImage.Rows; x++)
             {
@@ -102,7 +103,7 @@ namespace IPV_assignment1
 
         private void ProcessFrameD(object sender, EventArgs arg)
         {
-            Image<Bgr, byte> tempCloneImage = _imageFrame.Clone();
+            Image<Gray, byte> tempCloneImage = grayImage.Clone();
             Image<Gray, byte> origine = tempCloneImage.Convert<Gray, byte>();
             Image<Gray, byte> newImage = tempCloneImage.Convert<Gray, byte>();
             List<byte> tempValues = new List<byte>();
