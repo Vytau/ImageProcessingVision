@@ -13,7 +13,7 @@ namespace IPV_assignment1
         private Capture _capture; //takes images from camera as image frames
         private bool _captureInProgress; // checks if capture is executing
         private Image<Bgr, byte> _imageFrame = new Image<Bgr, byte>(@"..\..\Resources\lena.jpg");
-        private Image<Gray, byte> grayImage;
+        private Image<Gray, byte> _grayImage;
 
         public Form1()
         {
@@ -77,24 +77,24 @@ namespace IPV_assignment1
         private void ProcessFrameC(object sender, EventArgs arg)
         {
             Image<Bgr, byte> tempCloneImage = _imageFrame.Clone();
-            grayImage = tempCloneImage.Convert<Gray, byte>();
+            _grayImage = tempCloneImage.Convert<Gray, byte>();
 
-            for (int x = 0; x < grayImage.Rows; x++)
+            for (int x = 0; x < _grayImage.Rows; x++)
             {
-                for (int y = 0; y < grayImage.Cols; y++)
+                for (int y = 0; y < _grayImage.Cols; y++)
                 {
-                    if (grayImage[x, y].Intensity > 125)
+                    if (_grayImage[x, y].Intensity > 125)
                     {
-                        grayImage.Data[x, y, 0] = 255;
+                        _grayImage.Data[x, y, 0] = 255;
                     }
-                    else if (grayImage[x, y].Intensity <= 125)
+                    else if (_grayImage[x, y].Intensity <= 125)
                     {
-                        grayImage.Data[x, y, 0] = 0;
+                        _grayImage.Data[x, y, 0] = 0;
                     }
                 }
             }
 
-            imageBox4.Image = grayImage;
+            imageBox4.Image = _grayImage;
 
             //or with emgu cv threshold function
 
@@ -103,44 +103,47 @@ namespace IPV_assignment1
 
         private void ProcessFrameD(object sender, EventArgs arg)
         {
-            Image<Gray, byte> tempCloneImage = grayImage.Clone();
-            Image<Gray, byte> origine = tempCloneImage.Convert<Gray, byte>();
-            Image<Gray, byte> newImage = tempCloneImage.Convert<Gray, byte>();
-            List<byte> tempValues = new List<byte>();
-
-            for (int x = 0; x < tempCloneImage.Rows; x++)
+            if (_grayImage != null)
             {
-                for (int y = 0; y < tempCloneImage.Cols; y++)
+                Image<Gray, byte> tempCloneImage = _grayImage.Clone();
+                Image<Gray, byte> origine = tempCloneImage.Convert<Gray, byte>();
+                Image<Gray, byte> newImage = tempCloneImage.Convert<Gray, byte>();
+                List<byte> tempValues = new List<byte>();
+
+                for (int x = 0; x < tempCloneImage.Rows; x++)
                 {
-                    tempValues.Clear();
-                    tempValues.Add(origine.Data[x, y, 0]);
-                    if (x - 1 >= 0)
+                    for (int y = 0; y < tempCloneImage.Cols; y++)
                     {
-                        tempValues.Add(origine.Data[x - 1, y, 0]);
-                    }
-                    if (y - 1 >= 0)
-                    {
-                        tempValues.Add(origine.Data[x, y - 1, 0]);
-                    }
-                    if (x + 1 > tempCloneImage.Rows)
-                    {
-                        tempValues.Add(origine.Data[x + 1, y, 0]);
-                    }
-                    if (y + 1 > tempCloneImage.Cols)
-                    {
-                        tempValues.Add(origine.Data[x, y + 1, 0]);
-                    }
+                        tempValues.Clear();
+                        tempValues.Add(origine.Data[x, y, 0]);
+                        if (x - 1 >= 0)
+                        {
+                            tempValues.Add(origine.Data[x - 1, y, 0]);
+                        }
+                        if (y - 1 >= 0)
+                        {
+                            tempValues.Add(origine.Data[x, y - 1, 0]);
+                        }
+                        if (x + 1 > tempCloneImage.Rows)
+                        {
+                            tempValues.Add(origine.Data[x + 1, y, 0]);
+                        }
+                        if (y + 1 > tempCloneImage.Cols)
+                        {
+                            tempValues.Add(origine.Data[x, y + 1, 0]);
+                        }
 
-                    newImage.Data[x, y, 0] = tempValues.Max();
+                        newImage.Data[x, y, 0] = tempValues.Max();
+                    }
                 }
+
+                imageBox5.Image = newImage;
+                //to compare with oroginal picture
+                //imageBox6.Image = origine;
+
+                //or with emgu function
+                //imageBox6.Image = origine.Dilate(1);
             }
-
-            imageBox5.Image = newImage;
-            //to compare with oroginal picture
-            //imageBox6.Image = origine;
-
-            //or with emgu function
-            //imageBox6.Image = origine.Dilate(1);
         }
 
         private void ProcessFrameE(object sender, EventArgs arg)
@@ -158,7 +161,7 @@ namespace IPV_assignment1
                     tempValues1.Clear();
                     tempValues2.Clear();
 
-                    if (x != 0 & y != 0 & x+1 != origine.Cols & y+1 != origine.Rows)
+                    if (x != 0 & y != 0 & x + 1 != origine.Cols & y + 1 != origine.Rows)
                     {
                         //col -1
                         tempValues1.Add(origine.Data[x - 1, y - 1, 0]*-1);
@@ -237,7 +240,7 @@ namespace IPV_assignment1
                         //
                         tempValues1.Add(origine.Data[x + 1, y + 1, 0]);
 
-                        byte l = (byte)tempValues1.Average(i => i);
+                        byte l = (byte) tempValues1.Average(i => i);
 
                         newImage.Data[x, y, 0] = l;
                     }
@@ -247,7 +250,6 @@ namespace IPV_assignment1
         }
 
 
-       
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Idle += ProcessFrameA;
