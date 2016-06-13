@@ -5,7 +5,7 @@ using Emgu.CV.Structure;
 using System;
 using System.IO;
 
-namespace WindowsFormsApplication2
+namespace IPV_assignment2b
 {
     class DigitRecognizer
     {

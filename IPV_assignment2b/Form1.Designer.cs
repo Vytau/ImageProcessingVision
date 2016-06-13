@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication2
+﻿namespace IPV_assignment2b
 {
     partial class Form1
     {

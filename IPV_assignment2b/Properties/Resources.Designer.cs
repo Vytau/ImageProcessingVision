@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowsFormsApplication2.Properties
+namespace IPV_assignment2b.Properties
 {
 
 

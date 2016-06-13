@@ -39,7 +39,7 @@ namespace IPV_assignment2
             RU = corners[1];
             LB = corners[2];
             RB = corners[3];
-            Console.WriteLine(corners[0] +" " + corners[1] + " " + corners[2] + " " + corners[3]);
+            Console.WriteLine(corners[0] + " " + corners[1] + " " + corners[2] + " " + corners[3]);
 
             tempImage.Data[LU.Y, LU.X, 0] = 64;
             tempImage.Data[RU.Y, RU.X, 0] = 64;
@@ -67,7 +67,8 @@ namespace IPV_assignment2
                 {
                     if (tempImage.Data[y, x, 0] == 255)
                     {
-                        int temp = CvInvoke.FloodFill(tempImage, null, new Point(x, y), new MCvScalar(64), out boundingBox,
+                        int temp = CvInvoke.FloodFill(tempImage, null, new Point(x, y), new MCvScalar(64),
+                            out boundingBox,
                             new MCvScalar(5), new MCvScalar(5));
                         var sap = new SizeAndPoint
                         {
@@ -82,18 +83,18 @@ namespace IPV_assignment2
             //Find the largest object
             int largestAreaSize = areasList.Max(x => x.AreaSize);
             var largestArea = areasList.Find(x => x.AreaSize == largestAreaSize);
-            
+
             foreach (var x in areasList)
             {
                 if (x.AreaSize != largestAreaSize)
                 {
                     CvInvoke.FloodFill(tempImage, null, x.AreaPoint, new MCvScalar(0), out boundingBox,
-                            new MCvScalar(5), new MCvScalar(5));
+                        new MCvScalar(5), new MCvScalar(5));
                 }
             }
 
-            CvInvoke.FloodFill(tempImage, null, largestArea.AreaPoint , new MCvScalar(255), out boundingBox,
-                            new MCvScalar(5), new MCvScalar(5));
+            CvInvoke.FloodFill(tempImage, null, largestArea.AreaPoint, new MCvScalar(255), out boundingBox,
+                new MCvScalar(5), new MCvScalar(5));
 
             return tempImage;
         }
@@ -103,7 +104,13 @@ namespace IPV_assignment2
             // 0 = top left, 1 = top right, 2 = bottom left, 3 = bottom right
             List<double> distance = new List<double>();
             Image<Gray, byte> greyImage = img;
-            List<Point> corners = new List<Point> { new Point(0, 0), new Point(0, img.Width), new Point(img.Height, 0), new Point(img.Height, img.Width) };
+            List<Point> corners = new List<Point>
+            {
+                new Point(0, 0),
+                new Point(0, img.Width),
+                new Point(img.Height, 0),
+                new Point(img.Height, img.Width)
+            };
             List<Point> objectCorners = new List<Point>();
 
             for (int i = 0; i < img.Height; i++)
@@ -119,7 +126,7 @@ namespace IPV_assignment2
                                 int dx = i - corners[k].X;
                                 int dy = j - corners[k].Y;
 
-                                distance.Add(Math.Sqrt(dx * dx + dy * dy));
+                                distance.Add(Math.Sqrt(dx*dx + dy*dy));
                                 objectCorners.Add(new Point(j, i));
                             }
                         }
@@ -129,7 +136,7 @@ namespace IPV_assignment2
                             {
                                 int dx = i - corners[k].X;
                                 int dy = j - corners[k].Y;
-                                double dist = Math.Sqrt(dx * dx + dy * dy);
+                                double dist = Math.Sqrt(dx*dx + dy*dy);
                                 if (dist < distance[k])
                                 {
                                     distance[k] = dist;

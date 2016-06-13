@@ -10,7 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using SudokuStartup;
 
-namespace WindowsFormsApplication2
+namespace IPV_assignment2b
 {
     public partial class Form1 : Form
     {
@@ -204,13 +204,13 @@ namespace WindowsFormsApplication2
                             area = x.AreaSize;
                         }
                     }
-                    
+
                     //FloodFill with white color founded number
                     if (areasList.Find(x => x.AreaSize == area) != null)
                     {
                         var largestArea = areasList.Find(x => x.AreaSize == area);
                         CvInvoke.FloodFill(cell, null, largestArea.AreaPoint, new MCvScalar(255),
-                        out boundingRect, new MCvScalar(0), new MCvScalar(0));
+                            out boundingRect, new MCvScalar(0), new MCvScalar(0));
                     }
 
                     if (area > 150 && boundingRect.Width < 0.7*cell.Width && boundingRect.Height < 0.85*cell.Height)
