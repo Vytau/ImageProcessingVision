@@ -20,7 +20,7 @@ namespace IPV_assignment2b
             init();
 
             // Read the color image from file
-            Image<Bgr, Byte> image = new Image<Bgr, Byte>("sudoku-original.jpg");
+            Image<Bgr, Byte> image = new Image<Bgr, Byte>(@"..\..\Resources\sudoku-original.jpg");
             ImageViewer.Show(image, "Original image");
 
             // Convert to gray level image
