@@ -156,7 +156,7 @@ namespace IPV_assignment2b
 
             DigitRecognizer dr = new DigitRecognizer();
             Console.Write("Training ... ");
-            dr.train(@"train-images.idx3-ubyte", @"train-labels.idx1-ubyte");
+            dr.train(@"..\..\Resources\train-images.idx3-ubyte", @"..\..\Resources\train-labels.idx1-ubyte");
             Console.WriteLine("done");
 
 
