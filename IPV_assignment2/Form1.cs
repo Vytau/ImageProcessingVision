@@ -10,59 +10,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Emgu.CV.UI;
 
 namespace IPV_assignment2
 {
     public partial class Form1 : Form
     {
         private Image<Bgr, byte> _imageFrame;
-        private delegate double Distance(int x, int y);
-        Distance d;
-        bool gray_in_use = false;
 
         public Form1()
         {
             InitializeComponent();
-            d = new Distance(this.DistanceToBottomLeft);
-           
-            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             _imageFrame = new Image<Bgr, byte>(@"..\..\Resources\ipv.bmp");
-           // imageBox1.Image = _imageFrame;
             imageBox2.Image = _imageFrame.Clone();
+            Image<Gray, Byte> tempImage = _imageFrame.Convert<Gray, Byte>();
+            tempImage = tempImage.ThresholdBinary(new Gray(200), new Gray(255));
 
-            Image<Bgr, Byte> ThresholdCloneImage = _imageFrame.Clone();
-            Image<Gray, Byte> ThresholdImage = ThresholdCloneImage.Convert<Gray, Byte>();
-            for (int x = 0; x < ThresholdImage.Rows; x++)
-            {
-                for (int y = 0; y < ThresholdImage.Cols; y++)
-                {
-                    if (ThresholdImage[x, y].Intensity > 90)
-                    {
-                        ThresholdImage.Data[x, y, 0] = 255;
-                    }
-                    else if (ThresholdImage[x, y].Intensity <= 90)
-                    {
-                        ThresholdImage.Data[x, y, 0] = 0;
-                    }
-                }
-            }
-           
-            findLargestObject(ThresholdImage);
-            FindCorner(ThresholdImage);
+            tempImage = FindLargestObject(tempImage);
 
+            // TO DO: Find the corner points of the largest object; use the algorithm you made in assignment 2a
+            List<Point> corners = GetCorners(tempImage);
+            Point LU, RU, LB, RB;
+            LU = corners[0];
+            RU = corners[1];
+            LB = corners[2];
+            RB = corners[3];
+            Console.WriteLine(corners[0] +" " + corners[1] + " " + corners[2] + " " + corners[3]);
 
-            d = new Distance(this.DistanceToBottomRight);
-            FindCorner(ThresholdImage);
-            d = new Distance(this.DistanceToTopLeft);
-            FindCorner(ThresholdImage);
-            d = new Distance(this.DistanceToTopRight);
-            FindCorner(ThresholdImage);
-            imageBox1.Image = ThresholdImage;
-           
+            tempImage.Data[LU.Y, LU.X, 0] = 64;
+            tempImage.Data[RU.Y, RU.X, 0] = 64;
+            tempImage.Data[LB.Y, LB.X, 0] = 64;
+            tempImage.Data[RB.Y, RB.X, 0] = 64;
+
+            imageBox1.Image = tempImage;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -72,109 +56,91 @@ namespace IPV_assignment2
             imageBox2.Image = _imageFrame.Clone();
         }
 
-
-        public void findLargestObject(Image<Gray, byte> grayImage)
+        public Image<Gray, Byte> FindLargestObject(Image<Gray, byte> tempImage)
         {
-            double largestarea = 0;
-            int area;
-            Point location = new Point(0, 0);
-            MCvConnectedComp comp = new MCvConnectedComp();
-            Rectangle boundingBox = new Rectangle();
-            Rectangle boundingBoxLargest = new Rectangle();
-
-            // Floodfill every white pixel with new Gray(64), and while doing that, keep track of the largest area that was filled.
-            for (var y = 0; y < grayImage.Height; y++)
+            //Find all objects in image
+            Rectangle boundingBox;
+            List<SizeAndPoint> areasList = new List<SizeAndPoint>();
+            for (int x = 0; x < tempImage.Cols; x++)
             {
-                for (var x = 0; x < grayImage.Width; x++)
+                for (int y = 0; y < tempImage.Rows; y++)
                 {
-                    if (grayImage.Data[y, x, 0] >= 128)
+                    if (tempImage.Data[y, x, 0] == 255)
                     {
-                        // TO DO: perform the floodfill on the pixel
-                       area = CvInvoke.FloodFill(grayImage, null, new Point(x, y), new MCvScalar(64), out boundingBox, new MCvScalar(5), new MCvScalar(5));
-                        
-                        // Check whether the blob is larger then the ones found before
-                        if (area > largestarea)
+                        int temp = CvInvoke.FloodFill(tempImage, null, new Point(x, y), new MCvScalar(64), out boundingBox,
+                            new MCvScalar(5), new MCvScalar(5));
+                        var sap = new SizeAndPoint
                         {
-                            largestarea = area;
-                            location = new Point(x, y);
-                            boundingBoxLargest = boundingBox;
+                            AreaPoint = new Point(x, y),
+                            AreaSize = temp
+                        };
+                        areasList.Add(sap);
+                    }
+                }
+            }
 
+            //Find the largest object
+            int largestAreaSize = areasList.Max(x => x.AreaSize);
+            var largestArea = areasList.Find(x => x.AreaSize == largestAreaSize);
+            
+            foreach (var x in areasList)
+            {
+                if (x.AreaSize != largestAreaSize)
+                {
+                    CvInvoke.FloodFill(tempImage, null, x.AreaPoint, new MCvScalar(0), out boundingBox,
+                            new MCvScalar(5), new MCvScalar(5));
+                }
+            }
+
+            CvInvoke.FloodFill(tempImage, null, largestArea.AreaPoint , new MCvScalar(255), out boundingBox,
+                            new MCvScalar(5), new MCvScalar(5));
+
+            return tempImage;
+        }
+
+        private List<Point> GetCorners(Image<Gray, byte> img)
+        {
+            // 0 = top left, 1 = top right, 2 = bottom left, 3 = bottom right
+            List<double> distance = new List<double>();
+            Image<Gray, byte> greyImage = img;
+            List<Point> corners = new List<Point> { new Point(0, 0), new Point(0, img.Width), new Point(img.Height, 0), new Point(img.Height, img.Width) };
+            List<Point> objectCorners = new List<Point>();
+
+            for (int i = 0; i < img.Height; i++)
+            {
+                for (int j = 0; j < img.Width; j++)
+                {
+                    if (greyImage[i, j].Intensity > 200)
+                    {
+                        if (distance.Count == 0)
+                        {
+                            for (int k = 0; k < 4; k++)
+                            {
+                                int dx = i - corners[k].X;
+                                int dy = j - corners[k].Y;
+
+                                distance.Add(Math.Sqrt(dx * dx + dy * dy));
+                                objectCorners.Add(new Point(j, i));
+                            }
+                        }
+                        else
+                        {
+                            for (int k = 0; k < 4; k++)
+                            {
+                                int dx = i - corners[k].X;
+                                int dy = j - corners[k].Y;
+                                double dist = Math.Sqrt(dx * dx + dy * dy);
+                                if (dist < distance[k])
+                                {
+                                    distance[k] = dist;
+                                    objectCorners[k] = new Point(j, i);
+                                }
+                            }
                         }
                     }
                 }
             }
-
-            // TO DO: If there is blob found that has the right area, width and height, then Floodfill it with white 
-
-            largestarea = CvInvoke.FloodFill(grayImage, null, location, new MCvScalar(255), out boundingBoxLargest, new MCvScalar(5), new MCvScalar(5));
-            // TO DO: Fill all the other blobs with black to remove them
-            for (var y = 0; y < grayImage.Height; y++)
-            {
-                for (var x = 0; x < grayImage.Width; x++)
-                {
-                    if (grayImage.Data[y, x, 0] == 64)
-                    {
-
-                        // TO DO: perform the floodfill on the pixel
-                        area = CvInvoke.FloodFill(grayImage, null, new Point(x, y), new MCvScalar(0), out boundingBox, new MCvScalar(5), new MCvScalar(5));
-
-
-                    }
-                }
-            }
-           
+            return objectCorners;
         }
-        
-        #region calculateTheDistance
-        private double DistanceToBottomLeft(int x, int y)
-        {
-            return (Math.Pow(x - 0, 2) + Math.Pow(y - _imageFrame.Height, 2));
-            //
-        }
-        private double DistanceToBottomRight(int x, int y)
-        {
-           
-            return (Math.Pow(x - _imageFrame.Width, 2) + Math.Pow(y - _imageFrame.Height, 2));
-        }
-        private double DistanceToTopLeft(int x, int y)
-        {
-            return (Math.Pow(x - 0, 2) + Math.Pow(y - 0, 2));
-          
-        }
-        private double DistanceToTopRight(int x, int y)
-        {
-           
-            return (Math.Pow(x - _imageFrame.Width, 2) + Math.Pow(y - 0, 2));
-        }
-        #endregion   
-
-
-        private void FindCorner(Image<Gray, Byte> image)
-        {
-            double min = int.MaxValue;
-            int xneed = 0;
-            int yneed= 0;
-            for (var y = 0; y < image.Height; y++)
-            {
-                for (var x = 0; x < image.Width; x++)
-                {
-                    if (image.Data[y, x, 0] == 255)
-                    {
-                        
-                        if(this.d(x,y) < min)
-                        {
-                            min = this.d(x, y);
-                            xneed = x;
-                            yneed = y;
-                        }
-                    }
-                }
-            }
-            image.Data[yneed, xneed, 0] = 128;
-         
-        }
-       
-      
     }
 }
-   
