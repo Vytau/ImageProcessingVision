@@ -13,6 +13,7 @@ namespace IPV_assignment3
         private Capture _cap;
         private CascadeClassifier _haarFace;
         private CascadeClassifier _haarEye;
+        private CascadeClassifier _haarSmile;
 
         public Form1()
         {
@@ -31,19 +32,26 @@ namespace IPV_assignment3
                     ;
                     Rectangle[] rect1 = _haarFace.DetectMultiScale(grayframe, 1.4, 4);
                     Rectangle[] rect2 = _haarEye.DetectMultiScale(grayframe, 1.4, 4);
+                    Rectangle[] rect3 = _haarSmile.DetectMultiScale(grayframe, 1.4, 4);
 
                     //TODO: Add code top draw rectangles around the faces
                     ;
                     ;
+                    //Draw head rectangle
                     if (rect1 != null && rect1.Length != 0)
                     {
                         nextFrame.Draw(rect1[0], new Bgr(0, 255, 0), 3);
+                        //Draw eye rectangle
+                        if (rect2 != null && rect2.Length != 0 && rect1[0].Contains(rect2[0]))
+                        {
+                            nextFrame.Draw(rect2[0], new Bgr(255, 0, 0), 3);
+                        }
+                        if (rect3 != null && rect3.Length != 0 && rect1[0].Contains(rect3[0]))
+                        {
+                            nextFrame.Draw(rect3[0], new Bgr(0, 0, 255), 3);
+                        }
                     }
 
-                    if (rect2 != null && rect2.Length != 0 && rect1 != null && rect1.Length != 0 && rect1[0].Contains(rect2[0]))
-                    {
-                        nextFrame.Draw(rect2[0], new Bgr(255, 0, 0), 3);
-                    }
 
                     imageBox1.Image = nextFrame;
                 }
@@ -60,6 +68,7 @@ namespace IPV_assignment3
             ;
             _haarFace = new CascadeClassifier(@"../../Resources/haarcascade_frontalface_default.xml");
             _haarEye = new CascadeClassifier(@"../../Resources/haarcascade_eye.xml");
+            _haarSmile = new CascadeClassifier(@"../../Resources/haarcascade_smile.xml");
         }
     }
 }
