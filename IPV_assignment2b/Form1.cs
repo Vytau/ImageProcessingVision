@@ -198,7 +198,7 @@ namespace IPV_assignment2b
                     //Find the area of a number in a cell
                     foreach (var x in areasList)
                     {
-                        if (x.AreaSize > area && x.AreaRectangle.Width < 0.7*cell.Width &&
+                        if (x.AreaSize > 120 && x.AreaSize > area && x.AreaRectangle.Width < 0.7 * cell.Width &&
                             x.AreaRectangle.Height < 0.85*cell.Height)
                         {
                             area = x.AreaSize;
@@ -213,7 +213,7 @@ namespace IPV_assignment2b
                             out boundingRect, new MCvScalar(0), new MCvScalar(0));
                     }
 
-                    if (area > 150 && boundingRect.Width < 0.7*cell.Width && boundingRect.Height < 0.85*cell.Height)
+                    if (area > 120 && boundingRect.Width < 0.7*cell.Width && boundingRect.Height < 0.85*cell.Height)
                     {
                         // Put the digit in the center of the cell
                         cell = Center(cell,
