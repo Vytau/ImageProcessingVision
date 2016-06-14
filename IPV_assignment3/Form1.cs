@@ -42,17 +42,21 @@ namespace IPV_assignment3
                     {
                         nextFrame.Draw(rect1[0], new Bgr(0, 255, 0), 3);
                         //Draw eye rectangle
+                        int counter = 0;
                         if (rect2 != null && rect2.Length != 0)
                         {
                             for (int i = 0; i < rect2.Length; i++)
                             {
-                                if (rect1[0].Contains(rect2[i]))
+                                if (rect1[0].Contains(rect2[i]) && counter < 2)
                                 {
+                                    nextFrame.Draw(rect2[i], new Bgr(255,0,0),1);
+                                    counter++;
                                     for (int j = 0; j < rect2.Length; j++)
                                     {
-                                        if (!rect2[i].Contains(rect2[j]) && !rect2[i].IntersectsWith(rect2[j]))
+                                        if (!rect2[i].Contains(rect2[j]))
                                         {
-                                            nextFrame.Draw(rect2[j], new Bgr(255, 0, 0), 3);
+                                            nextFrame.Draw(rect2[j], new Bgr(255, 0, 0), 1);
+                                            counter++;
                                         }
                                     }
                                 }
