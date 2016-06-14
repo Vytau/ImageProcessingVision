@@ -57,6 +57,7 @@ namespace IPV_assignment3
                                         {
                                             nextFrame.Draw(rect2[j], new Bgr(255, 0, 0), 1);
                                             counter++;
+                                            return;
                                         }
                                     }
                                 }
