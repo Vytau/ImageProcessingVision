@@ -13,7 +13,6 @@ namespace IPV_assignment3
         private Capture _cap;
         private CascadeClassifier _haarFace;
         private CascadeClassifier _haarEye;
-        private CascadeClassifier _haarEye2;
         private CascadeClassifier _haarSmile;
 
         public Form1()
@@ -33,7 +32,6 @@ namespace IPV_assignment3
                     ;
                     Rectangle[] rect1 = _haarFace.DetectMultiScale(grayframe, 1.4, 4);
                     Rectangle[] rect2 = _haarEye.DetectMultiScale(grayframe, 1.4, 4);
-                    Rectangle[] rect4 = _haarEye2.DetectMultiScale(grayframe, 1.4, 4);
                     Rectangle[] rect3 = _haarSmile.DetectMultiScale(grayframe, 1.4, 4);
 
                     //TODO: Add code top draw rectangles around the faces
@@ -44,13 +42,21 @@ namespace IPV_assignment3
                     {
                         nextFrame.Draw(rect1[0], new Bgr(0, 255, 0), 3);
                         //Draw eye rectangle
-                        if (rect2 != null && rect2.Length != 0 && rect1[0].Contains(rect2[0]))
+                        if (rect2 != null && rect2.Length != 0)
                         {
-                            nextFrame.Draw(rect2[0], new Bgr(255, 0, 0), 3);
-                        }
-                        if (rect4 != null && rect4.Length != 0 && rect1[0].Contains(rect4[0]))
-                        {
-                            nextFrame.Draw(rect4[0], new Bgr(255, 0, 0), 3);
+                            for (int i = 0; i < rect2.Length; i++)
+                            {
+                                if (rect1[0].Contains(rect2[i]))
+                                {
+                                    for (int j = 0; j < rect2.Length; j++)
+                                    {
+                                        if (!rect2[i].Contains(rect2[j]) && !rect2[i].IntersectsWith(rect2[j]))
+                                        {
+                                            nextFrame.Draw(rect2[j], new Bgr(255, 0, 0), 3);
+                                        }
+                                    }
+                                }
+                            }
                         }
                         if (rect3 != null && rect3.Length != 0 && rect1[0].Contains(rect3[0]))
                         {
@@ -74,7 +80,6 @@ namespace IPV_assignment3
             ;
             _haarFace = new CascadeClassifier(@"../../Resources/haarcascade_frontalface_default.xml");
             _haarEye = new CascadeClassifier(@"../../Resources/haarcascade_eye.xml");
-            _haarEye2 = new CascadeClassifier(@"../../Resources/haarcascade_eye.xml");
             _haarSmile = new CascadeClassifier(@"../../Resources/haarcascade_smile.xml");
         }
     }
