@@ -49,17 +49,20 @@ namespace IPV_assignment3
                             {
                                 if (rect1[0].Contains(rect2[i]) && counter < 2)
                                 {
-                                    nextFrame.Draw(rect2[i], new Bgr(255,0,0),1);
-                                    counter++;
-                                    for (int j = 0; j < rect2.Length; j++)
+                                    Boolean intersects = false;
+                                    for (int j = 0; j < i; j++)
                                     {
-                                        if (!rect2[i].Contains(rect2[j]))
+                                        if (rect2[i].Contains(rect2[j])  ||rect2[i].IntersectsWith(rect2[j]))
                                         {
-                                            nextFrame.Draw(rect2[j], new Bgr(255, 0, 0), 1);
-                                            counter++;
-                                            return;
+                                            intersects = true;
                                         }
+                                        
                                     }
+                                    if (intersects == false)
+                                        {
+                                            nextFrame.Draw(rect2[i], new Bgr(255, 0, 0), 1);
+                                            counter++;
+                                        }
                                 }
                             }
                         }
