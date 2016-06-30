@@ -52,11 +52,18 @@ namespace IPV_assignment3
                                     Boolean intersects = false;
                                     for (int j = 0; j < i; j++)
                                     {
+<<<<<<< HEAD
                                         if (rect2[i].Contains(rect2[j])  ||rect2[i].IntersectsWith(rect2[j]))
                                         {
                                             intersects = true;
                                         }
                                         
+=======
+                                        if (!rect2[i].Contains(rect2[j]) && counter < 2)
+                                        {
+                                            nextFrame.Draw(rect2[j], new Bgr(255, 0, 0), 1);
+                                            counter++;                                        }
+>>>>>>> origin/master
                                     }
                                     if (intersects == false)
                                         {
