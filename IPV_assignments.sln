@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPV_assignment2b", "IPV_ass
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPV_assignment3", "IPV_assignment3\IPV_assignment3.csproj", "{78D5742D-83DC-444B-AF37-EDF66DB6EDE0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPV_assingment4", "IPV_assignment4\IPV_assingment4.csproj", "{D9394F7A-1C68-443A-8569-889E9C41EAB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{78D5742D-83DC-444B-AF37-EDF66DB6EDE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78D5742D-83DC-444B-AF37-EDF66DB6EDE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78D5742D-83DC-444B-AF37-EDF66DB6EDE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9394F7A-1C68-443A-8569-889E9C41EAB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9394F7A-1C68-443A-8569-889E9C41EAB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9394F7A-1C68-443A-8569-889E9C41EAB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9394F7A-1C68-443A-8569-889E9C41EAB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

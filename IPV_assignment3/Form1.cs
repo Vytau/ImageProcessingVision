@@ -53,12 +53,10 @@ namespace IPV_assignment3
                                     counter++;
                                     for (int j = 0; j < rect2.Length; j++)
                                     {
-                                        if (!rect2[i].Contains(rect2[j]))
+                                        if (!rect2[i].Contains(rect2[j]) && counter < 2)
                                         {
                                             nextFrame.Draw(rect2[j], new Bgr(255, 0, 0), 1);
-                                            counter++;
-                                            return;
-                                        }
+                                            counter++;                                        }
                                     }
                                 }
                             }
