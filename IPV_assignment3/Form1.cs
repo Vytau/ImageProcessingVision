@@ -49,27 +49,20 @@ namespace IPV_assignment3
                             {
                                 if (rect1[0].Contains(rect2[i]) && counter < 2)
                                 {
-                                    Boolean intersects = false;
+                                    var intersects = false;
                                     for (int j = 0; j < i; j++)
                                     {
-<<<<<<< HEAD
-                                        if (rect2[i].Contains(rect2[j])  ||rect2[i].IntersectsWith(rect2[j]))
+                                        if (rect2[i].Contains(rect2[j]) || rect2[i].IntersectsWith(rect2[j]))
                                         {
                                             intersects = true;
+                                            break;
                                         }
-                                        
-=======
-                                        if (!rect2[i].Contains(rect2[j]) && counter < 2)
-                                        {
-                                            nextFrame.Draw(rect2[j], new Bgr(255, 0, 0), 1);
-                                            counter++;                                        }
->>>>>>> origin/master
                                     }
                                     if (intersects == false)
-                                        {
-                                            nextFrame.Draw(rect2[i], new Bgr(255, 0, 0), 1);
-                                            counter++;
-                                        }
+                                    {
+                                        nextFrame.Draw(rect2[i], new Bgr(255, 0, 0), 1);
+                                        counter++;
+                                    }
                                 }
                             }
                         }
@@ -78,8 +71,6 @@ namespace IPV_assignment3
                             nextFrame.Draw(rect3[0], new Bgr(0, 0, 255), 3);
                         }
                     }
-
-
                     imageBox1.Image = nextFrame;
                 }
             }
