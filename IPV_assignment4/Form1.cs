@@ -118,7 +118,7 @@ namespace Face_Detection
                     {
                         // Draw the contour with the biggest area
                         testImage.Draw(contours[maxI].ToArray(), new Bgr(128, 128, 128), 1);
-
+                        
                         // Approximate it, in order to reduce the number of points
                         approxContour = new VectorOfPoint();
                         CvInvoke.ApproxPolyDP(contours[maxI], approxContour, 15, true);
@@ -138,9 +138,15 @@ namespace Face_Detection
                         Mat convexityDefect = new Mat();
                         CvInvoke.ConvexityDefects(approxContour, convexHull, convexityDefect);
 
+                        MCvMoments m = CvInvoke.Moments(approxContour);
+                        //maxCOG = new MCvPoint2D64f(m.M10/m.M00, m.M01/m.M00);
+                        maxCOG = m.GravityCenter;
+                        maxBBox = CvInvoke.BoundingRectangle(approxContour);
+
                         // If there were actually defects found, then analyse them
                         if (convexityDefect.Height != 0)
                             DrawAndComputeFingersNum(convexityDefect);
+
                     }
                 }
 
@@ -159,11 +165,11 @@ namespace Face_Detection
             // TODO: Define more of these dots
             ;
             ;
-            dots[1] = new CircleF(new PointF(cap.Width / 2 - 50, cap.Height / 2), 5);
-            dots[2] = new CircleF(new PointF(cap.Width / 2 + 50, cap.Height / 2), 5);
-            dots[3] = new CircleF(new PointF(cap.Width / 2 + 25, cap.Height / 2 + 100), 5);
-            dots[4] = new CircleF(new PointF(cap.Width / 2 - 25, cap.Height / 2 + 100), 5);
-            dots[5] = new CircleF(new PointF(cap.Width / 2, cap.Height / 2 + 200), 5);
+            dots[1] = new CircleF(new PointF(cap.Width/2 - 50, cap.Height/2), 5);
+            dots[2] = new CircleF(new PointF(cap.Width/2 + 50, cap.Height/2), 5);
+            dots[3] = new CircleF(new PointF(cap.Width/2 + 25, cap.Height/2 + 100), 5);
+            dots[4] = new CircleF(new PointF(cap.Width/2 - 25, cap.Height/2 + 100), 5);
+            dots[5] = new CircleF(new PointF(cap.Width/2, cap.Height/2 + 200), 5);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -174,7 +180,7 @@ namespace Face_Detection
 
         private void DrawAndComputeFingersNum(Mat convexityDefects)
         {
-            int fingerNum = 1; // Variable to count fingers
+            int fingerNum = 0; // Variable to count fingers
 
             // Copy the defects to a Mat, otherwise they will not be easily accessible
             using (
@@ -196,7 +202,8 @@ namespace Face_Detection
                     if ((startPoint.Y < maxCOG.Y || endPoint.Y < maxCOG.Y) &&
                         // start point or end point above center of gravity
                         (startPoint.Y < defectPoint.Y) && // start point above defect point
-                        (depth > maxBBox.Height/6.5)) // depth at least maxBBox.Height / 6.5))
+                        (depth > maxBBox.Height/6.5) && // depth at least maxBBox.Height / 6.5
+                        (depth < maxBBox.Height/2))
                     {
                         // Draw the lines between the points only if a suitable defect has been found
                         nextHsvFrame.Draw(new LineSegment2D(startPoint, defectPoint), new Hsv(60, 255, 255), 2);
@@ -208,8 +215,7 @@ namespace Face_Detection
                     nextHsvFrame.Draw(new CircleF(startPoint, 5f), new Hsv(0, 255, 255), 2);
                     nextHsvFrame.Draw(new CircleF(defectPoint, 5f), new Hsv(80, 255, 255), 5);
                     nextHsvFrame.Draw(new CircleF(endPoint, 5f), new Hsv(160, 255, 255), 4);
-                    nextHsvFrame.Draw(new CircleF(new Point((int) maxCOG.X, (int) maxCOG.Y), 5f), new Hsv(160, 0, 255),
-                        4);
+                    nextHsvFrame.Draw(new CircleF(new Point((int) maxCOG.X, (int) maxCOG.Y), 5f), new Hsv(160, 0, 255),4);
                 }
 
                 // Most people don't have more than 5 fingers :-)
